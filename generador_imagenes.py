@@ -23,3 +23,12 @@ def openai_request(prompt):
     
     return image_url
       
+def download_image(url, filename):
+    response = requests.get(url)
+    with open(filename, 'wb') as file:
+        file.write(response.content)
+
+# configure the page
+st.set_page_config(page_title="AI Image Generator", page_icon="📷", layout="centered")
+
+# create a streamlit app
