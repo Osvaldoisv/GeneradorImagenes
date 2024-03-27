@@ -2,7 +2,7 @@ import requests
 import streamlit as st
 
 api_key = ''
-# sacar o crear api key desde https://platform.openai.com/api-keys
+# sacar o crear api key desde openai
 
 def openai_request(prompt):
     headers = {'Authorization': f'Bearer {api_key}'}
