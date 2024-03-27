@@ -1,12 +1,12 @@
 import requests
 import streamlit as st
 
-api_key = ''
+api_key = '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'
 
 def openai_request(prompt):
-    headers = {'Autorization': f'Bearer {api_key}'}
+    headers = {'Authorization': f'Bearer {api_key}'}
     response = requests.post(
-        'https://api.openai.com/vi/images/generations',
+        'https://api.openai.com/v1/images/generations',
         headers=headers,
         json={
             'prompt': prompt,
@@ -17,7 +17,7 @@ def openai_request(prompt):
         }
     )
     if response.status_code != 200:
-        raise Exception(response.json)
+        raise Exception(response.json())
     else:
         image_url = response.json()['data'][0]['url']
     
@@ -32,3 +32,19 @@ def download_image(url, filename):
 st.set_page_config(page_title="AI Image Generator", page_icon="📷", layout="centered")
 
 # create a streamlit app
+st.image("images/random-grid.jpg", use_column_width=True)
+st.title("AI Image Generator")
+
+# Add a sidebar
+description = st.text_area("Prompt")
+
+# Add a button
+if st.button("Generate Image"):
+    with st.spinner("Generating your image..."):
+        url = openai_request(description)
+        filename = "Ai images/image_generator.png"
+        download_image(url, filename)
+        st.image(filename, use_column_width=True)
+        with open(filename, "rb") as f:
+            image_data = f.read()
+        download = st.download_button(label="Download Image", data=image_data, file_name="image_generated.jpg",)
